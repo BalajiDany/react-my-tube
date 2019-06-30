@@ -1,0 +1,10 @@
+.load_more {
+    text-align: center;
+    margin: 12px;
+    height: 32;
+    line-height: 32px;   
+}
+
+.file_list {
+    margin: 0 60px !important;
+}

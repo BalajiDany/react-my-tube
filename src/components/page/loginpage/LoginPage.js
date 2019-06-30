@@ -1,10 +1,13 @@
 import React, { Component } from "react";
-import { message, Spin, Form, Icon, Input, Button, Checkbox } from "antd";
+import { message, Form } from "antd";
 import { Redirect } from "react-router-dom";
 import styles from './LoginPage.module.css';
 import { Typography } from 'antd';
 import axios from 'axios';
 import Loading from "../../loading/Loading";
+import UserNameFormItem from "./formItems/UserNameFormItem";
+import PasswordFormItem from "./formItems/PassworFormItem";
+import LoginPrefixFormItem from "./formItems/LoginPrefixFormItem";
 
 const { Title } = Typography;
 
@@ -59,67 +62,10 @@ class LoginPage extends Component {
     };
 
     render() {
-        const { getFieldDecorator } = this.props.form;
 
         if (this.state.redirect) {
             return <Redirect to='/search' />;
         }
-
-        const userNameFormItem = (
-            <Form.Item validateStatus={this.state.errorLogin ? "error" : ""} >
-                {" "}
-                {
-                    getFieldDecorator("username", {
-                        rules: [{ required: true, message: "Please input your username!" }]
-                    })(
-                        <Input
-                            prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
-                            placeholder="Username"
-                        />
-                    )
-                }
-                {" "}
-            </Form.Item>
-        );
-
-        const passwordFormItem = (
-            <Form.Item validateStatus={this.state.errorLogin ? "error" : ""} >
-                {" "}
-                {
-                    getFieldDecorator("password", {
-                        rules: [{ required: true, message: "Please input your Password!" }]
-                    })(
-                        <Input
-                            prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}
-                            type="password"
-                            placeholder="Password"
-                        />
-                    )
-                }
-                {" "}
-            </Form.Item>
-        );
-
-        const submitFormItem = (
-            <Form.Item>
-                {" "}
-                {
-                    getFieldDecorator("remember", {
-                        valuePropName: "checked",
-                        initialValue: true
-                    })(
-                        <Checkbox> Remember me </Checkbox>)
-                }
-                {" "}
-                <a className={styles.login_form_forgot} href="/reset">
-                    Forgot password{" "}
-                </a>
-                {" "}
-                <Button type="primary" htmlType="submit" className={styles.login_form_button}>Log in</Button>
-                Or <a href="/regiser"> register now! </a>
-                {" "}
-            </Form.Item>
-        );
 
         let formComponent;
         if (this.state.doRender) {
@@ -127,11 +73,11 @@ class LoginPage extends Component {
                 <div className={styles.from_wrapper} >
                     <Form onSubmit={this.handleSubmit} className={styles.login_form}>
                         <Title level={2}>My Tube</Title>
-                        { userNameFormItem }
+                        <UserNameFormItem error={this.state.errorLogin} form={this.props.form} />
                         {" "}
-                        { passwordFormItem }
+                        <PasswordFormItem error={this.state.errorLogin} form={this.props.form} />
                         {" "}
-                        { submitFormItem }
+                        <LoginPrefixFormItem form={this.props.form} />
                         {" "}
                     </Form>
                 </div>)
