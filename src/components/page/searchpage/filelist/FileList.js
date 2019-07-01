@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Styles from './FileList.module.css';
-import { List, Avatar, Button, Skeleton } from 'antd';
+import { List, Avatar, Button, Skeleton, message } from 'antd';
 import axios from 'axios';
 import defaultImage from '../../../../assert/video-icon-file.png';
 
@@ -72,6 +72,29 @@ class FileList extends Component {
         });
     };
 
+    deleteFile = (item) => {
+        console.log(item);
+        var session_url = '/my-tube-api/v1/assert/delete';
+        var that = this;
+        axios.post(session_url, {}, {
+            params: {
+                fileKey: item.filePath,
+            }
+        }).then(function (response) {
+            that.setState(preState => {
+                var record = [...preState.data]
+                var deleteRecord = record.find(file => file.filePath === item.filePath);
+                if (deleteRecord) {
+                    const index = record.indexOf(deleteRecord);
+                    record.splice(index, 1);
+                    return { data: record, list: record };
+                }
+            })
+        }).catch(function (error) {
+            message.error(`Unable to delete ${item.fileName}`);
+        });
+    };
+
     render() {
         const { initLoading, loading, list, completeLoad } = this.state;
         const loadMore = !initLoading && !loading && !completeLoad > 0 ? (
@@ -88,7 +111,9 @@ class FileList extends Component {
                 loadMore={loadMore}
                 dataSource={list}
                 renderItem={item => (
-                    <List.Item actions={[<a href='#'>download</a>, <a  href='#'>delete</a>]}>
+                    <List.Item actions={[
+                        <a href='#'>download</a>,
+                        <a onClick={() => this.deleteFile(item)}>delete</a>]}>
                         <Skeleton avatar title={false} loading={item.loading} active>
                             <Avatar shape="square" size={82} src={defaultImage}>
                             </Avatar>
