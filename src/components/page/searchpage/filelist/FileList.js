@@ -35,7 +35,6 @@ class FileList extends Component {
 
     getData = callback => {
         var session_url = '/my-tube-api/v1/assert';
-        var that = this;
         axios.get(session_url, {
             params: {
                 offset: this.state.loadCount,
@@ -89,7 +88,7 @@ class FileList extends Component {
                 loadMore={loadMore}
                 dataSource={list}
                 renderItem={item => (
-                    <List.Item actions={[<a>edit</a>, <a>more</a>]}>
+                    <List.Item actions={[<a href='#'>download</a>, <a  href='#'>delete</a>]}>
                         <Skeleton avatar title={false} loading={item.loading} active>
                             <Avatar shape="square" size={82} src={defaultImage}>
                             </Avatar>

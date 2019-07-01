@@ -6,6 +6,7 @@ import HTTP_STATUS from "http-status-codes";
 import SearchPageHeader from './SearchPageHeader';
 import { Layout } from 'antd';
 import FileList from './filelist/FileList';
+import FileUpload from './fileupload/FileUpload';
 
 class SearchPage extends Component {
 
@@ -46,6 +47,7 @@ class SearchPage extends Component {
                 <Layout>
                     <SearchPageHeader user={this.state.userDetail.userName} doLogout={this.logout} />
                     <FileList user={this.state.userDetail.userName} />
+                    <FileUpload />
                 </Layout>
             );
         } else {
